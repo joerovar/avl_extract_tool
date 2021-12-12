@@ -2,10 +2,11 @@ import pandas as pd
 import datetime
 import numpy as np
 
-df_main = pd.read_csv('route20_stop_time_dwell.csv')
+df_final = pd.read_csv('route20_stop_time_final.csv')
 df_no_dwell = pd.read_csv('route20_stop_time.csv')
+cols = df_no_dwell.columns.tolist()
+cols += ['dwell_time', 'passenger_load', 'departure_time']
+cols.remove('diff')
+df_final = df_final[cols]
+df_final.to_csv('route20_stop_time_merged.csv', index=False)
 
-df_no_dwell = df_no_dwell[['schd_trip_id', 'stop_id', 'stop_sequence', 'arrival_time', 'schd_sec', 'event_time']]
-df_main = df_main.merge(df_no_dwell, left_on=['trip_id', 'stop_sequence', 'event_time'],
-                        right_on=['schd_trip_id', 'stop_sequence', 'event_time'])
-df_main.to_csv('route20_stop_time_final.csv', index=False)
