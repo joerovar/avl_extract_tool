@@ -10,7 +10,8 @@
 # df_sched = df_sched[['trip_id', 'stop_sequence', 'schd_sec', 'stop_id']]
 # df_main = pd.DataFrame()
 #
-# for (df, bdate) in ((df1, date1), (df2, date2), (df3,date3), (df4, date4)):
+# for joint in ((df1, date1), (df2, date2), (df3,date3), (df4, date4)):
+#     df, bdate = joint
 #     d = df[df['route_id'] == str(20)]
 #     d = d[['route_id', 'trip_id', 'stop_sequence', 'event_time', 'departure_time']]
 #     d['trip_id'] = d['trip_id'].replace('', np.nan)
@@ -33,4 +34,7 @@
 #     d = d.merge(df_sched, left_on=['trip_id', 'stop_sequence'], right_on=['trip_id', 'stop_sequence'])
 #     df_main = df_main.append(d, ignore_index=True)
 # df_main = df_main.sort_values(by=['trip_id', 'stop_sequence'])
+# df_main = df_main.drop_duplicates(subset=['avl_dep_time'])
+# df_main['avl_dep_time'] = df_main['avl_dep_time'].replace('', np.nan)
+# df_main = df_main.dropna(subset=['avl_dep_time'])
 # df_main.to_csv('in/raw/rt20_extra.csv', index=False)
